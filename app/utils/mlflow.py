@@ -8,7 +8,7 @@ POS_DICT = {
 
 
 def get_mlflow_experiment_id_from_path(
-    path: str
+    path: str | None
 ) -> str | None:
     """
     MLflow 경로에서 experiment id 추출
@@ -17,7 +17,7 @@ def get_mlflow_experiment_id_from_path(
 
 
 def get_mlflow_run_id_from_path(
-    path: str
+    path: str | None
 ) -> str | None:
     """
     MLflow 경로에서 run id 추출
@@ -26,21 +26,23 @@ def get_mlflow_run_id_from_path(
 
 
 def get_mlflow_ids_from_path(
-    path: str,
+    path: str | None,
     is_experiment: bool = False,
     is_run: bool = True
 ) -> tuple[str | None, str | None]:
     """
     MLflow 경로에서 experiment 및 run id 추출
     """
-    for prefix, pos in POS_DICT.items():
-        if path.startswith(prefix):
-            path_list = urllib.parse.urlparse(path).path.split('/')
-            try:
-                if len(path_list) > pos[1]:
-                    return (path_list[pos[0]] if is_experiment else None, path_list[pos[1]] if is_run else None)
-                return None, None
-            except IndexError or TypeError:
-                import traceback
-                traceback.print_exc()
-                return None, None
+    if path is not None:
+        for prefix, pos in POS_DICT.items():
+            if path.startswith(prefix):
+                path_list = urllib.parse.urlparse(path).path.split('/')
+                try:
+                    if len(path_list) > pos[1]:
+                        return (path_list[pos[0]] if is_experiment else None, path_list[pos[1]] if is_run else None)
+                    return None, None
+                except (IndexError, TypeError):
+                    import traceback
+                    traceback.print_exc()
+                    return None, None
+    return None, None
