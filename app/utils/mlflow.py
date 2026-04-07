@@ -1,9 +1,9 @@
 import urllib.parse
 
 POS_DICT = {
-    "s3": (1, 2),  # 이노
-    "artifact": (0, 1),  # 사내
-    "runs": (None, 0),  # 필요시 추가
+    "s3": (2, 3),  # 이노
+    "mlflow-artifacts": (1, 2),  # 사내
+    "runs": (0, 1),  # 필요시 추가
 }
 
 
