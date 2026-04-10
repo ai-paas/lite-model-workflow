@@ -48,3 +48,13 @@ class SupportOptimize(Enum):
     SKLEARN_ONNX = "sklearn_onnx"
     NPU = "npu"
     TPU = "tpu"
+
+
+class SupportOptimizerType(Enum):
+    OPTIMIZE = "optimize"
+    LIGHTWEIGHT = "lightweight"
+
+    @classmethod
+    def to_regex_pattern(cls) -> str:
+        content = "|".join([opt.value for opt in cls])
+        return rf"^({content})$"
