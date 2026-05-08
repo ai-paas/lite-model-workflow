@@ -12,6 +12,7 @@ class OptimizerInfo(IDwithTimestamp):
     accelerator: MappedColumn[str] = mapped_column(String, nullable=False)
     argument: MappedColumn[dict] = mapped_column(JSON, nullable=False)
     optimizer_type: MappedColumn[str] = mapped_column(String, nullable=True)
+    environment_sensitive: MappedColumn[str] = mapped_column(String, nullable=True)
 
     def to_schema(self) -> OptimizerInfoSchema:
         return OptimizerInfoSchema(
@@ -20,6 +21,7 @@ class OptimizerInfo(IDwithTimestamp):
             accelerator=self.accelerator,
             argument=self.argument,
             optimizer_type=self.optimizer_type,
+            environment_sensitive=self.environment_sensitive,
         )
 
     @classmethod
@@ -29,4 +31,5 @@ class OptimizerInfo(IDwithTimestamp):
             accelerator=optimizer_info_schema.accelerator,
             argument=optimizer_info_schema.argument,
             optimizer_type=optimizer_info_schema.optimizer_type,
+            environment_sensitive=optimizer_info_schema.environment_sensitive,
         )

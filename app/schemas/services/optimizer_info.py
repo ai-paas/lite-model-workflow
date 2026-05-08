@@ -10,3 +10,4 @@ class OptimizerInfo(BaseModel):
     optimizer_type: str | None = Field(default=None, pattern=SupportOptimizerType.to_regex_pattern())
     accelerator: str
     argument: dict
+    environment_sensitive: str | None
