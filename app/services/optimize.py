@@ -1,9 +1,10 @@
 from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
-from kfp import dsl
+from kfp import dsl, kubernetes
 from kfp.client.client import RunPipelineResult
 
 from app.config.enums import SupportOptimize
+from app.config.k8s import SupportTolerationFactory, SupportNodeSelectorFactory
 from app.core.settings import get_settings
 from app.core.repo.model_task import get_model_task_repository, ModelTaskRepository
 from app.core.repo.optimizer_info import get_optimizer_info_repository, OptimizerInfoRepository
@@ -61,6 +62,27 @@ class OptimizeService:
                 accelerator_type: str = task_info.accelerator_type
                 lite_model_task.set_accelerator_limit(1)  # container_spec.resources.accelerator_limit
                 lite_model_task.container_spec.resources.accelerator_type = accelerator_type
+
+                toleration = SupportTolerationFactory.get_toleration_by_optimizer(
+                    SupportOptimize(task_info.optimize_name)
+                )
+                if toleration:
+                    kubernetes.add_toleration(
+                        lite_model_task, 
+                        key=toleration.KEY.value,
+                        operator=toleration.OPERATOR.value,
+                        value=toleration.VALUE.value,
+                        effect=toleration.EFFECT.value,
+                    )
+                node_selector = SupportNodeSelectorFactory.get_node_selector_by_optimizer(
+                    SupportOptimize(task_info.optimize_name)
+                )
+                if node_selector:
+                    kubernetes.add_node_selector(
+                        lite_model_task, 
+                        label_key=node_selector.KEY.value,
+                        label_value=node_selector.VALUE.value,
+                    )
             # Kubeflow 파이프라인 캐시 비활성화
             lite_model_task.set_caching_options(False)
 

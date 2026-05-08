@@ -73,6 +73,14 @@ class Settings(BaseSettings):
 
     MLFLOW_HTTP_REQUEST_TIMEOUT: str
 
+    NPU_NODE_SELECTOR_KEY: str
+    NPU_NODE_SELECTOR_VALUE: str
+
+    NPU_TOLERATION_KEY: str
+    NPU_TOLERATION_VALUE: str
+    NPU_TOLERATION_EFFECT: str
+    NPU_TOLERATION_OPERATOR: str
+
     @property
     def get_db_uri(self) -> str:
         """Environment variables로부터 DB 정보를 받아와 URI를 반환"""
