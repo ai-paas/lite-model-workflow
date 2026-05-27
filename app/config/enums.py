@@ -1,4 +1,5 @@
 from enum import Enum
+
 from app.core.settings import get_settings
 
 SETTINGS = get_settings()
@@ -58,3 +59,14 @@ class SupportOptimizerType(Enum):
     def to_regex_pattern(cls) -> str:
         content = "|".join([opt.value for opt in cls])
         return rf"^({content})$"
+
+
+class SupportNPUToleration(Enum):
+    KEY = SETTINGS.NPU_NODE_SELECTOR_KEY
+    OPERATOR = SETTINGS.NPU_TOLERATION_OPERATOR
+    VALUE = SETTINGS.NPU_TOLERATION_VALUE
+    EFFECT = SETTINGS.NPU_TOLERATION_EFFECT
+
+class SupportNPUNodeSelector(Enum):
+    KEY = SETTINGS.NPU_NODE_SELECTOR_KEY
+    VALUE = SETTINGS.NPU_NODE_SELECTOR_VALUE

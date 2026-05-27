@@ -73,6 +73,7 @@ class Settings(BaseSettings):
 
     MLFLOW_HTTP_REQUEST_TIMEOUT: str
 
+    # NPU
     NPU_NODE_SELECTOR_KEY: str
     NPU_NODE_SELECTOR_VALUE: str
 
@@ -80,6 +81,9 @@ class Settings(BaseSettings):
     NPU_TOLERATION_VALUE: str
     NPU_TOLERATION_EFFECT: str
     NPU_TOLERATION_OPERATOR: str
+
+    # TVM
+    TVM_IMG: str
 
     @property
     def get_db_uri(self) -> str:
