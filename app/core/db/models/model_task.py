@@ -2,7 +2,7 @@ from sqlalchemy import String
 from sqlalchemy.orm import MappedColumn, mapped_column
 
 from app.core.db.models.base import Base, FullTimestamp
-from app.schemas.services.model_task import ModelTaskSchema
+from app.schemas.services.model_task import ModelTaskDetailSchema, ModelTaskSchema
 
 
 # TDOO: 컬럼 분리 및 관계 설정
@@ -44,6 +44,16 @@ class ModelTask(Base, FullTimestamp):
 
     def to_schema(self) -> ModelTaskSchema:
         return ModelTaskSchema(
+            model_name=self.model_name,
+            progress_status=self.progress_status,
+            model_path_output=self.model_path_output,
+            kubeflow_experiment_id=self.kubeflow_experiment_id,
+            task_uuid=self.task_uuid,
+            task_type=self.task_type,
+        )
+    
+    def to_detail_schema(self) -> ModelTaskDetailSchema:
+        return ModelTaskDetailSchema(
             model_name=self.model_name,
             progress_status=self.progress_status,
             model_path_output=self.model_path_output,

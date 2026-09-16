@@ -4,7 +4,7 @@ from app.core.db.models.model_task import ModelTask
 from app.core.db.session import SessionLocal
 from app.core.db.connect import SessionDepends
 from app.schemas.requests.task import ReqModelTaskPageForm, PatchTaskForm, ReqModelTaskForm
-from app.schemas.services.model_task import ModelTaskSchema
+from app.schemas.services.model_task import ModelTaskDetailSchema, ModelTaskSchema
 from app.utils.uuid import str_to_uuid4
 
 
@@ -28,8 +28,10 @@ class ModelTaskRepository:
         - 최적화 방식 필터
         - 작업 상태 필터
         """
-        statement = statement.where(ModelTask.model_name.ilike(f"%{form.model_name_query}%")) if form.model_name_query else statement
-        statement = statement.where(ModelTask.task_type.ilike(f"%{form.optimizer_name_query}%")) if form.optimizer_name_query else statement
+        statement = statement.where(ModelTask.model_name.ilike(f"%{form.model_name_query}%")) \
+            if form.model_name_query else statement
+        statement = statement.where(ModelTask.task_type.ilike(f"%{form.optimizer_name_query}%")) \
+            if form.optimizer_name_query else statement
         if form.task_status:
             # 문자열을 불린으로 변환 ("true", "True", "1" -> True, 그 외 -> False)
             task_status_bool = form.task_status.lower() in ("true", "1", "yes")
@@ -57,11 +59,12 @@ class ModelTaskRepository:
         Create model task
 
         - 모델 저장 요청시 생성
+        - schema를 받아서 sqlalchemy 모델로 변환 후 저장
 
         Args:
-            model_task: ModelTask
+            model_task_schema: ModelTaskSchema
         Returns:
-            ModelTask
+            ModelTaskSchema
         """
         model_task = ModelTask.from_schema(model_task_schema)
         self.db.add(model_task)
@@ -69,14 +72,19 @@ class ModelTaskRepository:
         self.db.refresh(model_task)
         return model_task.to_schema()
 
-    def get_task_by_uuid(self, task_uuid: str) -> ModelTaskSchema:
+    def get_task_by_uuid(self, task_uuid: str) -> ModelTaskDetailSchema:
         """
         task uuid로 조회
+
+        Args:
+            task_uuid: str
+        Returns:
+            ModelTaskDetailSchema | None
         """
         uuid = str_to_uuid4(task_uuid)
         statement = select(ModelTask).where(ModelTask.task_uuid == uuid).limit(1)
         result = self.db.execute(statement).scalar_one_or_none()
-        return result.to_schema() if result else None
+        return result.to_detail_schema() if result else None
 
     def get_tasks(self, form: ReqModelTaskForm) -> list[ModelTaskSchema]:
         """
