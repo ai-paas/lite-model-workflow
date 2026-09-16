@@ -1,9 +1,0 @@
-[submodule "trt_workflow"]
-	path = trt_workflow
-	url = https://gitlab.surromind.ai/gov-rnd-projects/ai-paas-2024-2026/trt_workflow.git
-[submodule "ptq_workflow"]
-	path = ptq_workflow
-	url = https://gitlab.surromind.ai/gov-rnd-projects/ai-paas-2024-2026/ptq_workflow.git
-[submodule "openvino_workflow"]
-	path = openvino_workflow
-	url = https://gitlab.surromind.ai/gov-rnd-projects/ai-paas-2024-2026/openvino_workflow

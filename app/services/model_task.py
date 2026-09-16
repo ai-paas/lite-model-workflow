@@ -3,14 +3,14 @@ from fastapi import Depends
 from app.core.repo.model_task import ModelTaskRepository, get_model_task_repository
 from app.schemas.requests.task import PatchTaskForm, ReqModelTaskForm, ReqModelTaskPageForm
 from app.schemas.responses.model_task import RespModelTaskPage
-from app.schemas.services.model_task import ModelTaskSchema
+from app.schemas.services.model_task import ModelTaskDetailSchema, ModelTaskSchema
 
 
 class ModelTaskService:
     def __init__(self, model_task_repo: ModelTaskRepository):
         self.model_task_repo = model_task_repo
 
-    def get_task_by_uuid(self, task_uuid: str) -> ModelTaskSchema:
+    def get_task_by_uuid(self, task_uuid: str) -> ModelTaskDetailSchema:
         return self.model_task_repo.get_task_by_uuid(task_uuid)
 
     def get_tasks(self, form: ReqModelTaskForm) -> list[ModelTaskSchema]:
