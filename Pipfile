@@ -35,7 +35,7 @@ watchfiles = "==0.24.0"
 websockets = "==13.1"
 pipfile = "*"
 uvicorn = {extras = ["standard"] }
-kfp = "==2.9.0"
+kfp = {version = "==2.9.0", extras = ["kubernetes"]}
 pymysql = "==1.1.1"
 
 [dev-packages]

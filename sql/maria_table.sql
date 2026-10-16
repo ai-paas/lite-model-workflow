@@ -13,6 +13,8 @@ CREATE TABLE optimizer_info (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     optimizer_name VARCHAR(255) NOT NULL,
     accelerator VARCHAR(255) NOT NULL,
+    optimizer_type VARCHAR(15) NULL,
+    environment_sensitive VARCHAR(15) NULL,
     argument JSON NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
