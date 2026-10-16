@@ -85,6 +85,20 @@ class Settings(BaseSettings):
     # TVM
     TVM_IMG: str
 
+    NPU_TOLERATION_FLAG: bool
+    NPU_NODE_SELECTOR_FLAG: bool
+
+    # TARGET_ACCELERATOR_NAME
+    TENSORRT_TOLERATION_KEY: str
+    TENSORRT_TOLERATION_VALUE: str
+    TENSORRT_TOLERATION_EFFECT: str
+    TENSORRT_TOLERATION_OPERATOR: str
+    TENSORRT_NODE_SELECTOR_KEY: str
+    TENSORRT_NODE_SELECTOR_VALUE: str
+
+    TENSORRT_TOLERATION_FLAG: bool
+    TENSORRT_NODE_SELECTOR_FLAG: bool
+
     @property
     def get_db_uri(self) -> str:
         """Environment variables로부터 DB 정보를 받아와 URI를 반환"""
