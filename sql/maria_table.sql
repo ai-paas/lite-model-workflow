@@ -37,10 +37,25 @@ CREATE TABLE model_tasks (
     task_uuid UUID NOT NULL,
     progress_status BOOLEAN NOT NULL DEFAULT FALSE,
     model_name VARCHAR(511) NOT NULL,
-    task_type VARCHAR(255) NOT NULL,
+    task_type VARCHAR(31) NOT NULL,
     model_path_output VARCHAR(1023) DEFAULT NULL,
     kubeflow_experiment_id VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP NULL
-); 
+);
+
+-- peak_vram_mb: 실측 최대 VRAM(MB). API 에는 노출하지 않고, 점유량(CEIL(peak * 1.2))과 상/중/하 분류에만 사용한다.
+-- 분류 기준(마진 적용 후): 하 < 8192MB, 중 < 24576MB, 그 외 상
+CREATE TABLE model_inference_resource_usage (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    model_id BIGINT NOT NULL,
+    gpu_name VARCHAR(255) NOT NULL,
+    peak_vram_mb INT NOT NULL,
+    measured_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    additional_info JSON NULL,
+    FOREIGN KEY (model_id) REFERENCES model_info(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
